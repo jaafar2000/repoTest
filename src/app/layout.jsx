@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
+import SessionValidator from "./components/SessionValidator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
             <Loader />
           </ClerkLoading>
           <ClerkLoaded>
+            <SessionValidator/>
             <Header />
             {children}
           </ClerkLoaded>
