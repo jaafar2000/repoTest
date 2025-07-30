@@ -1,7 +1,23 @@
-import Link from 'next/link';
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+'use client'
+
+import Link from 'next/link'
+import {
+  SignInButton,
+  UserButton,
+  useUser,
+  useClerk,
+} from '@clerk/nextjs'
 
 export default function Header() {
+  const { isSignedIn, user, isLoaded } = useUser()
+  const { signOut } = useClerk()
+
+  // Optional: force logout if session is broken
+  if (isLoaded && isSignedIn && !user) {
+    signOut()
+    return null // don't render header temporarily
+  }
+
   return (
     <header className='bg-gradient-to-r from-blue-300 to-purple-400 shadow-lg'>
       <div className='max-w-6xl mx-auto flex justify-between items-center p-3'>
@@ -14,20 +30,20 @@ export default function Header() {
             App
           </span>
         </Link>
-        {/* add a navigation menu */}
+
+        {/* nav */}
         <nav>
           <ul className='flex gap-4'>
             <Link href='/'>Home</Link>
             <Link href='/about'>About</Link>
-            <SignedIn>
+            {isLoaded && isSignedIn && user ? (
               <UserButton />
-            </SignedIn>
-            <SignedOut>
+            ) : (
               <SignInButton />
-            </SignedOut>
+            )}
           </ul>
         </nav>
       </div>
     </header>
-  );
+  )
 }
