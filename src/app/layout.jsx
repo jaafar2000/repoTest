@@ -1,11 +1,11 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import { dark } from "@clerk/themes";
 import { ClerkProvider, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
 import SessionValidator from "./components/SessionValidator";
-
+import RightSidebar from "./components/RightSidebar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -14,18 +14,28 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
+    
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
       <html lang="en">
-        <body className={inter.className}>
-          <ClerkLoading>
-            <Loader />
-          </ClerkLoading>
-          <ClerkLoaded>
-            <SessionValidator/>
-            <Header />
-            {children}
-          </ClerkLoaded>
+        <body className={`${inter.className}`}>
+          <div className="flex flex-row w-[70%]  mx-auto" >
+            <ClerkLoading>
+              <Loader />
+            </ClerkLoading>
+            <ClerkLoaded>
+              <SessionValidator />
+              <Header />
+              {children}
+              <RightSidebar/>
+            </ClerkLoaded>
+
+          </div>
         </body>
       </html>
     </ClerkProvider>

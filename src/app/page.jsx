@@ -1,91 +1,66 @@
+"use client";
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useRef, useState } from "react";
+import {fetchPosts} from "@/lib/actions/fetchPosts";
+import CreatePost from "./components/CreatePost";
+import PostsFeed from "./components/PostsFeed";
+
 export default function Home() {
-  return (
-    <div className="px-4 py-12 max-w-4xl mx-auto text-gray-200">
-      <h1 className="text-4xl font-extrabold mb-8 text-center text-white">
-        Welcome to the Full-Stack Blog Template
-      </h1>
-      <div className="bg-gray-900 p-6 rounded-lg flex flex-col items-center">
-        <img
-          src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1600&q=80"
-          alt="Blog Illustration"
-          className="rounded-lg h-96 w-full object-cover mb-6"
-        />
-        <div>
-          <p className="mb-4">
-            This project is a powerful full-stack blog template built with
-            Next.js 15 and the App Router for maximum performance and
-            scalability.
-          </p>
-          <p className="mb-4">
-            We've integrated Clerk for secure user authentication and MongoDB
-            for flexible, schema-less data storage.
-          </p>
-          <p className="mb-4">
-            Posts are managed through a dynamic API, and TailwindCSS is used for
-            rapid UI development in dark mode.
-          </p>
-          <p className="mb-4">
-            This starter is ideal for building personal blogs, developer
-            portfolios, or content platforms.
-          </p>
-          <p className="mb-4">
-            Check out the official docs for each technology to dive deeper:
-          </p>
-          <ul className="mb-4 space-y-2">
-            <li>
-              <a
-                href="https://nextjs.org/docs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-blue-400 hover:underline"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z" />
-                </svg>
-                Next.js Documentation
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://clerk.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-blue-400 hover:underline"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z" />
-                </svg>
-                Clerk Authentication
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.mongodb.com/docs/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-blue-400 hover:underline"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z" />
-                </svg>
-                MongoDB Documentation
-              </a>
-            </li>
-          </ul>
-        </div>
+  const { user, isLoaded } = useUser();
+  const [posts, setPosts] = useState([]);
+  const middleRef = useRef(null);
+
+  // Ensure fetchPosts only runs when Clerk is ready and user is available
+  useEffect(() => {
+    if (!isLoaded || !user) return;
+
+    fetchPosts()
+      .then((data) => {
+        console.log("Fetched posts:", data);
+        setPosts(data);
+      })
+      .catch((err) => console.error("Error in fetchPosts:", err.message));
+  }, [isLoaded, user]);
+
+  const handlePostCreated = (newPost) => {
+    setPosts((prev) => [newPost, ...prev]);
+  };
+
+  // Handle scroll only on client
+  useEffect(() => {
+    const onWheel = (e) => {
+      if (middleRef.current) {
+        middleRef.current.scrollTop += e.deltaY;
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, []);
+
+  if (!isLoaded) return null;
+  if (!user)
+    return (
+      <div
+        className="w-[50%] flex items-center justify-center border-r max-h-screen overflow-scroll border-[#2e3235]"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        <p className="text-gray-400">Please sign in to view the feed.</p>
       </div>
+    );
+  const handlePostDeleted = async () => {
+    const updatedPosts = await fetchPosts();
+    setPosts(updatedPosts);
+  };
+  return (
+    <div
+      id="middle"
+      ref={middleRef}
+      className="w-[50%] border-r max-h-screen overflow-scroll border-[#2e3235]"
+      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+    >
+      <CreatePost onPostCreated={handlePostCreated} />
+      <PostsFeed posts={posts} onPostDeleted={handlePostDeleted} />
     </div>
   );
 }
