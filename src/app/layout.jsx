@@ -21,9 +21,9 @@ export default function RootLayout({ children }) {
       }}
     >
       <html lang="en">
-        <body className={`${inter.className}`}>
-          <div className="flex flex-col md:flex-row w-full md:w-[70%] mx-auto">
-            <ClerkLoading>
+        <body className={`${inter.className}    h-[100%] `}>
+          <div className="flex flex-col md:flex-row w-full md:w-[70%] h-full  mx-auto">
+              <ClerkLoading>
               <Loader />
             </ClerkLoading>
             <ClerkLoaded>

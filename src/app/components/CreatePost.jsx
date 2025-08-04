@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import React from "react";
 import { useUser } from "@clerk/nextjs";
@@ -37,9 +38,6 @@ const CreatePost = ({ onPostCreated }) => {
       if (response.ok) {
         setPostText("");
         setFile(null);
-
-        // Refetch posts and update parent
-
         onPostCreated(data.post);
       } else {
         console.error("Upload failed:", data.error || response.statusText);
@@ -52,12 +50,21 @@ const CreatePost = ({ onPostCreated }) => {
   };
 
   return (
-    <div className="border-b border-[#2e3235] ">
-      <p className="text-center py-6 text-2xl text-gray-200 uppercase font-semibold tracking-wide border-b border-[#2e3235]">
+    <>
+      {/* Sticky Glassy Header */}
+      <p
+        className="
+          sticky top-0 z-50
+          text-center py-4 text-xl text-gray-200 uppercase font-semibold tracking-wide
+          border-b border-[#2e3235]
+         backdrop-blur-md shadow-md
+        "
+      >
         Start a new post — share your ideas.
       </p>
 
-      <form onSubmit={handleSubmit} className="px-5 py-5 space-y-6">
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="px-5 py-6 space-y-6 border-b border-[#2e3235]">
         {/* Avatar + Input */}
         <div className="flex items-center gap-4 border-b border-[#2e3235] pb-4">
           <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-700">
@@ -102,7 +109,7 @@ const CreatePost = ({ onPostCreated }) => {
           </button>
         </div>
       </form>
-    </div>
+    </>
   );
 };
 

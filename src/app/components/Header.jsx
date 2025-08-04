@@ -17,7 +17,6 @@ export default function Header() {
   const { signOut } = useClerk();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Close sidebar when screen size changes
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -35,30 +34,40 @@ export default function Header() {
 
   return (
     <>
-      {/* Mobile Top Bar */}
+      {/* Top Nav Bar (mobile only) */}
       <div className="md:hidden flex items-center justify-between bg-[#1a1a1a] p-4 border-b border-[#2e3235] text-white">
         <Link href="/" className="text-2xl font-bold">
           <IoShareSocialOutline className="text-3xl" />
         </Link>
-        <button onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        <button onClick={() => setMenuOpen(true)}>
+          <Menu className="w-6 h-6" />
         </button>
       </div>
 
-      {/* Sidebar (Mobile Slide-In + Desktop Static) */}
+      {/* Sidebar */}
       <aside
-        className={`fixed md:static top-0 left-0 h-full w-[70%] max-w-xs md:w-[23%] bg-[#1a1a1a] text-white border-r border-[#2e3235] p-5 z-40 transform transition-transform duration-300 ease-in-out
-          ${menuOpen ? "translate-x-0" : "-translate-x-full"} 
+        className={`sm:hidden   w-[70%] max-w-xs md:w-[23%] text-white border-r border-[#2e3235] p-5 z-40 transform transition-transform duration-300 ease-in-out
+          ${menuOpen ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0 md:flex md:flex-col`}
       >
-        {/* Logo */}
-        <Link
-          href="/"
-          className="text-2xl font-bold mb-8 tracking-tight flex items-center"
-          onClick={() => setMenuOpen(false)}
-        >
-          <IoShareSocialOutline className="text-4xl" />
-        </Link>
+        {/* Sidebar Header (Logo + Close) */}
+        <div className="flex items-center justify-between w-full mb-6 md:mb-8">
+          <Link
+            href="/"
+            className="text-2xl font-bold tracking-tight flex items-center"
+            onClick={() => setMenuOpen(false)}
+          >
+            <IoShareSocialOutline className="text-4xl" />
+          </Link>
+
+          {/* Close icon for mobile */}
+          <button
+            className="md:hidden text-white"
+            onClick={() => setMenuOpen(false)}
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
 
         {/* Auth Panel */}
         {isLoaded && isSignedIn && user ? (
@@ -111,7 +120,7 @@ export default function Header() {
         )}
       </aside>
 
-      {/* Backdrop when mobile menu is open */}
+      {/* Backdrop (only mobile) */}
       {menuOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"

@@ -25,16 +25,16 @@ export default function Home() {
     setPosts((prev) => [newPost, ...prev]);
   };
 
-  useEffect(() => {
-    const onWheel = (e) => {
-      if (middleRef.current) {
-        middleRef.current.scrollTop += e.deltaY;
-        e.preventDefault();
-      }
-    };
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
-  }, []);
+  // useEffect(() => {
+  //   const onWheel = (e) => {
+  //     if (middleRef.current) {
+  //       middleRef.current.scrollTop += e.deltaY;
+  //       e.preventDefault();
+  //     }
+  //   };
+  //   window.addEventListener("wheel", onWheel, { passive: false });
+  //   return () => window.removeEventListener("wheel", onWheel);
+  // }, []);
 
   if (!isLoaded) return null;
 
@@ -57,7 +57,7 @@ export default function Home() {
     <div
       id="middle"
       ref={middleRef}
-      className="w-full md:w-[50%] border-r max-h-screen overflow-scroll border-[#2e3235]"
+      className="w-full md:w-[50%] border-r h-full overflow-scroll border-[#2e3235]"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <CreatePost onPostCreated={handlePostCreated} />
