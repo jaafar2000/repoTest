@@ -3,8 +3,8 @@
 import Link from "next/link";
 import {
   SignInButton,
-  UserButton,
   SignUpButton,
+  UserButton,
   useUser,
   useClerk,
 } from "@clerk/nextjs";
@@ -34,44 +34,44 @@ export default function Header() {
 
   return (
     <>
-      {/* Top Nav Bar (mobile only) */}
-      <div className="md:hidden flex items-center justify-between bg-[#1a1a1a] p-4 border-b border-[#2e3235] text-white">
+      {/* 🔹 Mobile Top Bar */}
+      <div className="md:hidden flex items-center z-[100] justify-between bg-[#1a1a1a] p-4 border-b border-[#2e3235] text-white ">
         <Link href="/" className="text-2xl font-bold">
           <IoShareSocialOutline className="text-3xl" />
         </Link>
-        <button onClick={() => setMenuOpen(true)}>
+        <button onClick={() => setMenuOpen(prev=>!prev)}>
           <Menu className="w-6 h-6" />
         </button>
       </div>
 
-      {/* Sidebar */}
+      {/* 🔹 Sidebar Drawer */}
       <aside
-        className={`sm:hidden   w-[70%] max-w-xs md:w-[23%] text-white border-r border-[#2e3235] p-5 z-40 transform transition-transform duration-300 ease-in-out
+        className={`
+          fixed top-0 left-0 h-full bg-[#1a1a1a] text-white z-50 border-r border-[#2e3235] p-5
+          transform transition-transform duration-300 ease-in-out
+          w-[80%] max-w-[280px]
           ${menuOpen ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0 md:flex md:flex-col`}
+          md:translate-x-0 md:static md:w-[240px] md:flex md:flex-col
+        `}
       >
-        {/* Sidebar Header (Logo + Close) */}
+        {/* Header Row */}
         <div className="flex items-center justify-between w-full mb-6 md:mb-8">
           <Link
             href="/"
-            className="text-2xl font-bold tracking-tight flex items-center"
+            className="text-2xl font-bold flex items-center"
             onClick={() => setMenuOpen(false)}
           >
-            <IoShareSocialOutline className="text-4xl" />
+            <IoShareSocialOutline className="text-3xl" />
           </Link>
-
-          {/* Close icon for mobile */}
-          <button
-            className="md:hidden text-white"
-            onClick={() => setMenuOpen(false)}
-          >
+          {/* Close button for mobile */}
+          <button className="md:hidden" onClick={() => setMenuOpen(false)}>
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Auth Panel */}
+        {/* 🔹 Auth Panel */}
         {isLoaded && isSignedIn && user ? (
-          <div className="w-full border border-[#2e3235] rounded-lg p-4 flex flex-col items-center shadow-lg mb-4">
+          <div className="w-full border border-[#2e3235] rounded-lg p-4 flex flex-col items-center shadow mb-4">
             <UserButton
               appearance={{
                 variables: {
@@ -107,12 +107,12 @@ export default function Header() {
         ) : (
           <div className="w-full mb-4">
             <Link href="/sign-in" onClick={() => setMenuOpen(false)}>
-              <button className="text-white border border-[#2e3235] mb-3 cursor-pointer font-medium py-2 px-4 rounded w-full">
+              <button className="text-white border border-[#2e3235] mb-3 w-full py-2 rounded">
                 Sign In
               </button>
             </Link>
             <Link href="/sign-up" onClick={() => setMenuOpen(false)}>
-              <button className="bg-gray-200 hover:bg-white text-black cursor-pointer font-medium py-2 px-4 rounded w-full">
+              <button className="bg-gray-200 text-black w-full py-2 rounded">
                 Sign Up
               </button>
             </Link>
@@ -120,10 +120,10 @@ export default function Header() {
         )}
       </aside>
 
-      {/* Backdrop (only mobile) */}
+      {/* 🔹 Backdrop when menu is open (mobile only) */}
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
           onClick={() => setMenuOpen(false)}
         />
       )}

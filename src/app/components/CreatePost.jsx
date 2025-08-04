@@ -51,10 +51,9 @@ const CreatePost = ({ onPostCreated }) => {
 
   return (
     <>
-      {/* Sticky Glassy Header */}
       <p
         className="
-          sticky top-0 z-50
+          sticky top-0 z-10
           text-center py-4 text-xl text-gray-200 uppercase font-semibold tracking-wide
           border-b border-[#2e3235]
          backdrop-blur-md shadow-md
@@ -63,9 +62,10 @@ const CreatePost = ({ onPostCreated }) => {
         Start a new post — share your ideas.
       </p>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="px-5 py-6 space-y-6 border-b border-[#2e3235]">
-        {/* Avatar + Input */}
+      <form
+        onSubmit={handleSubmit}
+        className="px-5 py-6 space-y-6 border-b border-[#2e3235]"
+      >
         <div className="flex items-center gap-4 border-b border-[#2e3235] pb-4">
           <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-700">
             <Image
@@ -86,7 +86,6 @@ const CreatePost = ({ onPostCreated }) => {
           />
         </div>
 
-        {/* File input + Submit */}
         <div className="flex items-center justify-between">
           <label className="relative flex items-center gap-2 text-gray-400 bg-[#1c1f22] border border-[#2e3235] rounded px-3 py-2 cursor-pointer hover:border-gray-500 transition">
             <AiOutlineFileAdd className="text-xl" />
