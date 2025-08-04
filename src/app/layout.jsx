@@ -14,8 +14,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-
-    
   return (
     <ClerkProvider
       appearance={{
@@ -24,7 +22,7 @@ export default function RootLayout({ children }) {
     >
       <html lang="en">
         <body className={`${inter.className}`}>
-          <div className="flex flex-row w-[70%]  mx-auto" >
+          <div className="flex flex-col md:flex-row w-full md:w-[70%] mx-auto">
             <ClerkLoading>
               <Loader />
             </ClerkLoading>
@@ -32,9 +30,8 @@ export default function RootLayout({ children }) {
               <SessionValidator />
               <Header />
               {children}
-              <RightSidebar/>
+              <RightSidebar />
             </ClerkLoaded>
-
           </div>
         </body>
       </html>

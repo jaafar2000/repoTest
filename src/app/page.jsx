@@ -1,7 +1,7 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
-import {fetchPosts} from "@/lib/actions/fetchPosts";
+import { fetchPosts } from "@/lib/actions/fetchPosts";
 import CreatePost from "./components/CreatePost";
 import PostsFeed from "./components/PostsFeed";
 
@@ -10,7 +10,6 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const middleRef = useRef(null);
 
-  // Ensure fetchPosts only runs when Clerk is ready and user is available
   useEffect(() => {
     if (!isLoaded || !user) return;
 
@@ -26,7 +25,6 @@ export default function Home() {
     setPosts((prev) => [newPost, ...prev]);
   };
 
-  // Handle scroll only on client
   useEffect(() => {
     const onWheel = (e) => {
       if (middleRef.current) {
@@ -39,24 +37,27 @@ export default function Home() {
   }, []);
 
   if (!isLoaded) return null;
+
   if (!user)
     return (
       <div
-        className="w-[50%] flex items-center justify-center border-r max-h-screen overflow-scroll border-[#2e3235]"
+        className="w-full md:w-[50%] flex items-center justify-center border-r max-h-screen overflow-scroll border-[#2e3235]"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <p className="text-gray-400">Please sign in to view the feed.</p>
       </div>
     );
+
   const handlePostDeleted = async () => {
     const updatedPosts = await fetchPosts();
     setPosts(updatedPosts);
   };
+
   return (
     <div
       id="middle"
       ref={middleRef}
-      className="w-[50%]  border-r max-h-screen overflow-scroll border-[#2e3235]"
+      className="w-full md:w-[50%] border-r max-h-screen overflow-scroll border-[#2e3235]"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <CreatePost onPostCreated={handlePostCreated} />
