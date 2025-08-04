@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/connectdb";
 import User from "@/lib/models/user.model";
+
 export async function POST(req) {
   try {
     await dbConnect();
@@ -7,19 +8,26 @@ export async function POST(req) {
     const { userId, userToFollow } = await req.json();
 
     if (!userId || !userToFollow) {
-      return new Response(JSON.stringify({ msg: "Missing required fields" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ msg: "Missing required fields" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
 
     const user = await User.findOne({ clerkId: userId });
     const userFollowed = await User.findById(userToFollow);
 
     if (!user || !userFollowed) {
-      return new Response(JSON.stringify({ msg: "User not found" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ msg: "User not found" }),
+        {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
 
     const isAlreadyFollowing = user.following.some(
