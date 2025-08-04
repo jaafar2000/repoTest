@@ -1,19 +1,21 @@
 import { verifyWebhook } from "@clerk/nextjs/webhooks";
-import { createOrUpdateUser } from "@/lib/actions/user";
-import { deleteUser } from "@/lib/actions/user";
+import { createOrUpdateUser, deleteUser } from "@/lib/actions/user";
+
+export const config = {
+  api: {
+    bodyParser: false, // Required for Clerk webhook verification
+  },
+};
+
 export async function POST(req) {
   try {
     const evt = await verifyWebhook(req, {
       secret: process.env.CLERK_WEBHOOK_SECRET,
     });
 
-    // Do something with payload
-    // For this guide, log payload to console
     const { id } = evt.data;
     const eventType = evt.type;
-    console.log(
-      `Received webhook with ID ${id} and event type of ${eventType}`
-    );
+    console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
     console.log("Webhook payload:", evt.data);
 
     if (eventType === "user.created" || eventType === "user.updated") {
@@ -24,26 +26,30 @@ export async function POST(req) {
         image_url,
         email_addresses,
         username,
+        primary_email_address_id, // ✅ FIXED: this is now included
       } = evt?.data;
+
       try {
         await createOrUpdateUser(
           id,
           first_name,
           last_name,
+          username,
           image_url,
           email_addresses,
-          username
+          primary_email_address_id
         );
         return new Response("User is created or updated", {
           status: 200,
         });
       } catch (error) {
-        console.log("Error creating or updating user:", error);
-        return new Response("Error occured", {
+        console.error("Error creating or updating user:", error);
+        return new Response("Error occurred", {
           status: 400,
         });
       }
     }
+
     if (eventType === "user.deleted") {
       const { id } = evt?.data;
       try {
@@ -52,8 +58,8 @@ export async function POST(req) {
           status: 200,
         });
       } catch (error) {
-        console.log("Error deleting user:", error);
-        return new Response("Error occured", {
+        console.error("Error deleting user:", error);
+        return new Response("Error occurred", {
           status: 400,
         });
       }

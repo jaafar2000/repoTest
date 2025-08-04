@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: false, // This is crucial for allowing null
+      unique: true,
     },
     firstName: {
       type: String,
@@ -22,15 +23,30 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
+      sparse: true,
     },
     avatar: {
       type: String,
-      required: true,
+      required: false, // Allowing null if Clerk doesn't provide
     },
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    following: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );
 
-const User = mongoose.models.User || mongoose.model('User', userSchema);
+
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;

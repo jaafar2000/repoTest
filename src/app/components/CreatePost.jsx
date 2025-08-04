@@ -52,22 +52,24 @@ const CreatePost = ({ onPostCreated }) => {
   };
 
   return (
-    <div className="border-b border-[#2e3235]">
-      <p className="border-b border-[#2e3235] text-center py-7 text-2xl text-gray-300 uppercase font-semibold tracking-wide">
-        Start a new post—share your ideas.
+    <div className="border-b border-[#2e3235] ">
+      <p className="text-center py-6 text-2xl text-gray-200 uppercase font-semibold tracking-wide border-b border-[#2e3235]">
+        Start a new post — share your ideas.
       </p>
 
-      <form onSubmit={handleSubmit}>
-        <div className="flex items-center gap-5 px-5 w-[90%] mx-auto my-3 py-6 border-b border-[#2e3235]">
-          <div className="w-10 h-10 rounded-full overflow-hidden">
+      <form onSubmit={handleSubmit} className="px-5 py-5 space-y-6">
+        {/* Avatar + Input */}
+        <div className="flex items-center gap-4 border-b border-[#2e3235] pb-4">
+          <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-700">
             <Image
               src={user?.imageUrl || "/default-avatar.png"}
               alt="User avatar"
-              width={100}
-              height={100}
+              width={40}
+              height={40}
               className="object-cover w-full h-full"
             />
           </div>
+
           <input
             type="text"
             placeholder="What's happening?"
@@ -77,24 +79,23 @@ const CreatePost = ({ onPostCreated }) => {
           />
         </div>
 
-        <div className="flex items-center w-[90%] mx-auto justify-between px-5 py-4">
-          <div className="relative flex items-center gap-1 max-w-fit text-gray-400 bg-[#1c1f22] border border-[#2e3235] rounded px-2 py-1 cursor-pointer hover:border-gray-500 transition">
-            <AiOutlineFileAdd className="text-2xl" /> {file ? "" : "Add Image"}
+        {/* File input + Submit */}
+        <div className="flex items-center justify-between">
+          <label className="relative flex items-center gap-2 text-gray-400 bg-[#1c1f22] border border-[#2e3235] rounded px-3 py-2 cursor-pointer hover:border-gray-500 transition">
+            <AiOutlineFileAdd className="text-xl" />
+            <span className="text-sm truncate max-w-[150px]">
+              {file ? file.name : "Add Image"}
+            </span>
             <input
               type="file"
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              className="absolute inset-0 opacity-0 cursor-pointer"
               onChange={(e) => setFile(e.target.files[0])}
             />
-            {file && (
-              <span className="ml-2 text-gray-300 max-w-xs truncate">
-                {file.name}
-              </span>
-            )}
-          </div>
+          </label>
 
           <button
             type="submit"
-            className="bg-white text-black font-semibold px-6 py-2 rounded-3xl opacity-85 hover:opacity-100 transition"
+            className="bg-white text-black font-semibold text-sm px-6 py-2 rounded-full hover:opacity-100 transition disabled:opacity-60"
             disabled={loading}
           >
             {loading ? "Posting..." : "Post"}
