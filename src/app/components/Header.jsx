@@ -63,16 +63,19 @@ export default function Header() {
         </div>
       ) : (
         <div className="w-full">
-          <SignInButton mode="modal">
-            <button className="  text-white border border-[#2e3235] mb-3 cursor-pointer  font-medium py-2 px-4 rounded w-full">
-              Sign In
-            </button>
-          </SignInButton>
-          <SignUpButton>
-            <button className="bg-gray-200 hover:bg-white text-black cursor-pointer  font-medium py-2 px-4 rounded w-full">
-              Sign Up
-            </button>
-          </SignUpButton>
+          <div className="w-full">
+            <Link href="/sign-in">
+              <button className="text-white border border-[#2e3235] mb-3 cursor-pointer font-medium py-2 px-4 rounded w-full">
+                Sign In
+              </button>
+            </Link>
+
+            <Link href="/sign-up">
+              <button className="bg-gray-200 hover:bg-white text-black cursor-pointer font-medium py-2 px-4 rounded w-full">
+                Sign Up
+              </button>
+            </Link>
+          </div>
         </div>
       )}
 

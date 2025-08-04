@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { FaUserPlus } from "react-icons/fa";
+import { FaUserPlus, FaUserCheck } from "react-icons/fa"; // FaUserCheck for unfollow icon
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 
@@ -15,51 +15,57 @@ const RightSidebar = () => {
     { title: "MongoDB", tweets: "7.8K" },
   ];
 
-  // // const fetchUsers = async () => {
-  // //   try {
-  // //     const res = await fetch("/api/users");
-  // //     if (!res.ok) throw new Error("Failed to fetch users");
-  // //     return await res.json();
-  // //   } catch (err) {
-  // //     console.error("Error fetching users:", err);
-  // //     return [];
-  // //   }
-  // // };
+  const fetchUsers = async () => {
+    try {
+      if (!user?.id) return [];
+      // Pass current user ID so API can return isFollowing flag
+      const res = await fetch(`/api/users?currentUserId=${user.id}`);
+      if (!res.ok) throw new Error("Failed to fetch users");
+      return await res.json();
+    } catch (err) {
+      console.error("Error fetching users:", err);
+      return [];
+    }
+  };
 
-  // const handleFollow = async (userToFollowId) => {
-  //   if (!user?.id || !userToFollowId) {
-  //     console.warn("Missing user ID or target ID for follow");
-  //     return;
-  //   }
+  const handleFollow = async (userToFollowId) => {
+    if (!user?.id || !userToFollowId) {
+      console.warn("Missing user ID or target ID for follow");
+      return;
+    }
 
-  //   try {
-  //     const res = await fetch("/api/follow", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         userId: user?.id,
-  //         userToFollow: userToFollowId,
-  //       }),
-  //     });
+    try {
+      const res = await fetch("/api/follow", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          userToFollow: userToFollowId,
+        }),
+      });
 
-  //     const data = await res.json();
+      const data = await res.json();
 
-  //     if (data?.success) {
-  //       const updatedUsers = await fetchUsers();
-  //       setUsers(updatedUsers);
-  //     }
-  //   } catch (err) {
-  //     console.error("Error following/unfollowing user:", err);
-  //   }
-  // };
+      if (data?.success) {
+        // Refresh the users list to get updated follow status
+        const updatedUsers = await fetchUsers();
+        setUsers(updatedUsers);
+      }
+    } catch (err) {
+      console.error("Error following/unfollowing user:", err);
+    }
+  };
 
-  // useEffect(() => {
-  //   const getUsers = async () => {
-  //     const usersData = await fetchUsers();
-  //     setUsers(usersData);
-  //   };
-  //   getUsers();
-  // }, []);
+  useEffect(() => {
+    // Defensive: always use consistent dependency type in array
+    if (!user?.id) return;
+
+    const getUsers = async () => {
+      const usersData = await fetchUsers();
+      setUsers(usersData);
+    };
+    getUsers();
+  }, [user?.id ?? null]); // fix dependency array length/type issue
 
   return (
     <aside className="w-[350px] hidden xl:block px-4 py-6 text-white space-y-6 overflow-y-auto max-h-screen scrollbar-hide">
@@ -85,7 +91,7 @@ const RightSidebar = () => {
       </div>
 
       {/* Who to Follow */}
-      {/* <div className="border border-[#2e3235] rounded-xl p-4 space-y-4">
+      <div className="border border-[#2e3235] rounded-xl p-4 space-y-4">
         <h3 className="font-bold text-lg">Who to follow</h3>
         {users.map(
           (u) =>
@@ -113,15 +119,19 @@ const RightSidebar = () => {
                 </div>
                 <button
                   onClick={() => handleFollow(u._id)}
-                  className="bg-white text-black text-sm px-3 py-1 rounded-full flex items-center gap-1"
+                  className={`text-sm px-1 py-1 rounded-full flex items-center gap-1 ${
+                    u.isFollowing
+                      ? "bg-red-500 text-white"
+                      : "bg-white text-black"
+                  }`}
                 >
-                  <FaUserPlus />
-                  Follow
+                  {u.isFollowing ? <FaUserCheck /> : <FaUserPlus />}
+                  {u.isFollowing ? "Unfollow" : "Follow"}
                 </button>
               </div>
             )
         )}
-      </div> */}
+      </div>
     </aside>
   );
 };
