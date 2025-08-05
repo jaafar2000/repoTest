@@ -8,7 +8,7 @@ const ReplyCard = ({ reply, userName, callFetch }) => {
   const { deletePost, deleting } = usePostActions({ postId: reply?._id });
 
   return (
-    <div className="flex flex-col sm:flex-row gap-3 px-4 py-4 border-b border-[#2e3235] relative">
+    <div className="flex flex-row gap-3 px-4 justify-between py-4 border-b border-[#2e3235] relative">
       {deleting && <div className="loader" />}
       <div className="w-10 h-10 rounded-full overflow-hidden relative shrink-0">
         <Image
