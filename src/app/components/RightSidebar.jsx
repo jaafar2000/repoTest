@@ -20,8 +20,6 @@ const RightSidebar = () => {
       if (!res.ok) throw new Error("Failed to fetch trending news");
       const json = await res.json();
 
-    
-
       const newArr = json.data.slice(53, 56).map((item) => ({
         title: item.title,
         img: item.image || "/fallback-image.png",
@@ -105,11 +103,13 @@ const RightSidebar = () => {
   return (
     <aside
       className="
-        w-[350px] hidden xl:block px-4 py-6 text-white space-y-6
+        w-full sm:hidden
+        block xl:block
+        px-4 py-6 text-white space-y-6
         overflow-y-auto max-h-screen
         scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent
       "
-      style={{ scrollbarWidth: "hidden" }}
+      style={{ scrollbarWidth: "none" }}
     >
       {/* Search */}
       <div className="flex items-center px-4 py-2 rounded-full bg-[#1e2124]">
@@ -146,7 +146,6 @@ const RightSidebar = () => {
                   height={60}
                   className="object-contain"
                   unoptimized
-                  // unoptimized because these are external images without config
                 />
               </div>
               <div className="flex flex-col">
@@ -155,7 +154,7 @@ const RightSidebar = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-semibold text-sm"
-                  style={{ maxWidth: "calc(350px - 80px - 24px)" }}
+                  style={{ maxWidth: "calc(100% - 80px - 24px)" }}
                 >
                   {item.title}
                 </a>
