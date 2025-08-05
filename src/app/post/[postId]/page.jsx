@@ -25,7 +25,6 @@ const Page = () => {
     onDeleted: () => router.push("/"),
   });
 
-  // Fetch the main post
   useEffect(() => {
     const fetchData = async () => {
       const posts = await fetchPosts();
@@ -36,7 +35,6 @@ const Page = () => {
     if (postId) fetchData();
   }, [postId]);
 
-  // Stable reply fetcher
   const fetchReplies = useCallback(async (id) => {
     if (!id) return;
     try {
@@ -52,7 +50,6 @@ const Page = () => {
     }
   }, []);
 
-  // Fetch replies when post is ready
   useEffect(() => {
     if (post?._id) {
       fetchReplies(post._id);
@@ -62,10 +59,9 @@ const Page = () => {
   return (
     <div
       id="middle"
-      className="w-[50%] border-r max-h-screen overflow-scroll border-[#2e3235]"
+      className="md:w-[50%] sm:w-[full] border-r max-h-screen overflow-scroll border-[#2e3235]"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
-      {/* Back link */}
       <Link
         href="/"
         className="flex items-center border-[#2e3235] border-b text-white hover:text-gray-300 transition duration-200"
@@ -76,7 +72,6 @@ const Page = () => {
         </div>
       </Link>
 
-      {/* Post author */}
       <div className="p-5 flex flex-row gap-4 items-center justify-start">
         <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden">
           <Image
@@ -95,7 +90,6 @@ const Page = () => {
         </div>
       </div>
 
-      {/* Post content */}
       {post?.postText && <p className="px-6">{post.postText}</p>}
 
       {post?.imageUrl && (
@@ -110,13 +104,11 @@ const Page = () => {
         </div>
       )}
 
-      {/* Post time */}
       <div className="mx-6 py-3 text-gray-600 border-[#2e3235] border-b">
         {post?.createdAt &&
           format(new Date(post.createdAt), "hh:mm a . MMMM dd, yyyy")}
       </div>
 
-      {/* Action bar */}
       <div className="mx-6 py-3 flex flex-row justify-between text-gray-600 border-[#2e3235] border-b">
         <button onClick={likePost} className="flex items-center gap-1">
           <Heart className={liked ? "text-red-500" : ""} />
@@ -133,14 +125,12 @@ const Page = () => {
         )}
       </div>
 
-      {/* Reply input */}
       <CreateReply
         refreshReplies={() => fetchReplies(post?._id)}
         postId={post?._id}
         PostAuthor={post?.user?.username}
       />
 
-      {/* Replies */}
       {replies.length > 0 &&
         replies.map((rep) => (
           <div key={rep?._id}>

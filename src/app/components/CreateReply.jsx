@@ -44,7 +44,7 @@ const CreateReply = ({ PostAuthor, postId, refreshReplies }) => {
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col sm:flex-row items-center gap-3 px-5 py-4"
+        className="flex flex-row sm:flex-row items-center gap-3 px-5 py-4"
       >
         <div className="w-10 h-10 relative rounded-full overflow-hidden shrink-0">
           <Image
