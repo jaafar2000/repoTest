@@ -51,14 +51,7 @@ const CreatePost = ({ onPostCreated }) => {
 
   return (
     <>
-      <p
-        className="
-          sticky top-0 z-10
-          text-center py-4 text-xl text-gray-200 uppercase font-semibold tracking-wide
-          border-b border-[#2e3235]
-         backdrop-blur-md shadow-md
-        "
-      >
+      <p className="sticky top-0 z-10 text-center py-4 text-base sm:text-xl text-gray-200 uppercase font-semibold tracking-wide border-b border-[#2e3235] backdrop-blur-md shadow-md">
         Start a new post — share your ideas.
       </p>
 
@@ -82,12 +75,14 @@ const CreatePost = ({ onPostCreated }) => {
             placeholder="What's happening?"
             value={postText}
             onChange={(e) => setPostText(e.target.value)}
-            className="flex-grow bg-transparent outline-none text-gray-200 placeholder-gray-500 text-lg"
+            className="flex-grow bg-transparent outline-none text-gray-200 placeholder-gray-500 text-base sm:text-lg"
           />
         </div>
 
-        <div className="flex items-center justify-between">
-          <label className="relative flex items-center gap-2 text-gray-400 bg-[#1c1f22] border border-[#2e3235] rounded px-3 py-2 cursor-pointer hover:border-gray-500 transition">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+          <label
+            className="relative flex items-center gap-2 text-gray-400 bg-[#1c1f22] border border-[#2e3235] rounded px-3 py-2 cursor-pointer hover:border-gray-500 transition w-max max-w-[200px]"
+          >
             <AiOutlineFileAdd className="text-xl" />
             <span className="text-sm truncate max-w-[150px]">
               {file ? file.name : "Add Image"}

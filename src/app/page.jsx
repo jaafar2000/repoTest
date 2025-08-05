@@ -31,8 +31,8 @@ export default function Home() {
 
   if (!user)
     return (
-      <div className="w-full md:w-1/2 flex items-center justify-center md:border-r max-h-screen overflow-auto border-[#2e3235]">
-        <p className="text-gray-400 text-center px-4">
+      <div className="w-full flex items-center justify-center border-t md:border-t-0 md:border-r border-[#2e3235] p-6">
+        <p className="text-gray-400 text-center">
           Please sign in to view the feed.
         </p>
       </div>
@@ -42,8 +42,10 @@ export default function Home() {
     <div
       id="middle"
       ref={middleRef}
-      className="w-full md:w-1/2 h-screen md:overflow-auto border-r border-[#2e3235]"
-      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      className="w-full md:w-2/3 lg:w-1/2 border-t md:border-t-0 md:border-r border-[#2e3235] overflow-y-auto"
+      style={{
+        scrollbarWidth: "none", // Firefox
+      }}
     >
       <CreatePost onPostCreated={handlePostCreated} />
       <PostsFeed posts={posts} onPostDeleted={handlePostDeleted} />

@@ -27,7 +27,9 @@ export default function RootLayout({ children }) {
               <SessionValidator />
               <Header />
               {children}
-              <RightSidebar />
+              <div className="hidden md:block w-full md:w-[30%] lg:w-[30%] px-4 py-6 text-white space-y-6 border-t md:border-l md:border-t-0 border-[#2e3235] overflow-y-auto max-h-[100vh]">
+                <RightSidebar />
+              </div>
             </ClerkLoaded>
           </div>
         </body>
