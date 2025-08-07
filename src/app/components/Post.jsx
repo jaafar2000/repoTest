@@ -50,7 +50,7 @@ const Post = ({ post, onPostDeleted }) => {
 
   return (
     <>
-      {deleting && <Loader /> }
+      {deleting && <Loader />}
 
       <Link href={`/post/${post?._id}`}>
         <div className="flex items-start pt-4  gap-3 mb-2">
@@ -80,7 +80,7 @@ const Post = ({ post, onPostDeleted }) => {
             </div>
 
             {post?.postText && (
-              <p className="mt-3 text-gray-300 text-sm leading-relaxed whitespace-pre-wrap bg-[#121212] rounded-sm p-2 border-l-2 border-white">
+              <p className=" text-gray-300 text-sm leading-relaxed whitespace-pre-wrap bg-[#121212] rounded-sm p-2 border-l-2 border-white  mt-5 ">
                 {post.postText}
               </p>
             )}

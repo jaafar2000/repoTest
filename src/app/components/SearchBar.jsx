@@ -3,7 +3,10 @@
 import React from "react";
 import { FiSearch } from "react-icons/fi";
 
-const SearchBar = ({ searchTerm, setSearchTerm }) => {
+import { useSearchStore } from "@/lib/actions/useStateStore";
+const SearchBar = () => {
+  const { searchTerm, setSearchTerm } = useSearchStore();
+
   return (
     <div className="flex items-center w-full px-4 py-2 rounded-full bg-[#1e2124]">
       <FiSearch className="text-gray-400 text-xl mr-2" />

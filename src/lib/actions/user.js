@@ -1,9 +1,8 @@
 import User from "../models/user.model";
 import dbConnect from "../connectdb";
-
 /**
  * Create or update a user in MongoDB from Clerk webhook data
- */export const createOrUpdateUser = async (
+ */ export const createOrUpdateUser = async (
   id,
   first_name,
   last_name,
@@ -45,3 +44,4 @@ import dbConnect from "../connectdb";
     throw error;
   }
 };
+

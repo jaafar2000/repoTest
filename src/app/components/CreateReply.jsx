@@ -37,7 +37,7 @@ const CreateReply = ({ PostAuthor, postId, refreshReplies }) => {
   };
 
   return (
-    <div className="border-t border-[#2e3235] pt-2">
+    <div className="border-t border-b  border-[#2e3235] pt-2">
       <p className="text-sm text-gray-500 pl-5 mb-2">
         Replying to <span className="text-blue-400">@{PostAuthor}</span>
       </p>

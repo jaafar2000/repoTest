@@ -5,12 +5,14 @@ import { FaUserPlus, FaUserCheck } from "react-icons/fa";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-
-const FollowSuggestions = ({ searchTerm, parent }) => {
+import {useSearchStore} from "@/lib/actions/useStateStore";
+const FollowSuggestions = ({  parent }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatingIds, setUpdatingIds] = useState(new Set());
   const { user } = useUser();
+
+  const { searchTerm } = useSearchStore();
 
   const fetchUsers = async () => {
     try {
@@ -21,7 +23,7 @@ const FollowSuggestions = ({ searchTerm, parent }) => {
       const allUsers = await res.json();
 
       if (parent !== "users") {
-          return allUsers.slice(1, 4); // only 3 users (e.g., suggestions)
+        return allUsers.slice(1, 4);
       }
 
       return allUsers;
@@ -79,7 +81,7 @@ const FollowSuggestions = ({ searchTerm, parent }) => {
 
   return (
     <div className="border border-[#2e3235] rounded-xl p-4 space-y-4">
-      <h3 className="font-bold text-lg">Who to follow  </h3>
+      <h3 className="font-bold text-lg">Who to follow </h3>
       {loading ? (
         <p className="text-gray-500 text-sm">Loading suggestions...</p>
       ) : filteredUsers.length > 0 ? (
@@ -88,23 +90,23 @@ const FollowSuggestions = ({ searchTerm, parent }) => {
             u?.clerkId !== user?.id && (
               <div
                 key={u._id}
-                className="flex justify-between items-center hover:bg-[#2c2f33] p-2 rounded"
+                className="flex justify-between items-center  p-2 "
               >
                 <div className="flex items-center gap-2">
-                  <div className="w-[40px] h-[40px] relative rounded-full overflow-hidden">
+                  <div className="w-[30px] h-[30px]  relative rounded-full overflow-hidden">
                     <Image
                       src={u.avatar || "/fallback-avatar.png"}
                       alt={u.username || "User avatar"}
                       fill
                       style={{ objectFit: "cover" }}
-                      sizes="40px"
+                      sizes="30px"
                       unoptimized
-                    />
+                      />
                   </div>
                   <div>
                     <p className="font-semibold text-sm">
                       {`${u.firstName} ${u.lastName}`.length > 14
-                        ? `${u.firstName} ${u.lastName}`.slice(0, 14) + "..."
+                        ? `${u.firstName} ${u.lastName}`.slice(0, 10) + "..."
                         : `${u.firstName} ${u.lastName}`}
                     </p>
                     <p className="text-gray-500 text-xs">@{u.username}</p>
@@ -113,11 +115,9 @@ const FollowSuggestions = ({ searchTerm, parent }) => {
                 <button
                   onClick={() => handleFollow(u._id)}
                   disabled={updatingIds.has(u._id)}
-                  className={`text-sm px-2 py-1 rounded-full flex items-center gap-1 transition-colors duration-200 ${
-                    u.isFollowing
-                      ? "bg-red-500 text-white hover:bg-red-600"
-                      : "bg-white text-black hover:bg-gray-200"
-                  } disabled:opacity-50`}
+                  className={`text-sm px-2 py-1 rounded-full flex items-center gap-1 transition-colors duration-200 
+              text-white border-2 border-white cursor-pointer opacity-70 hover:opacity-100 
+              disabled:opacity-50`}
                 >
                   {u.isFollowing ? <FaUserCheck /> : <FaUserPlus />}
                   {updatingIds.has(u._id)
@@ -132,7 +132,16 @@ const FollowSuggestions = ({ searchTerm, parent }) => {
       ) : (
         <p className="text-gray-500 text-sm">No matching users found.</p>
       )}
-      {parent !== "users" ? <Link href={"/users"} className="text-blue-500 underline cursor-pointer"  >Show More</Link> : ""}
+      {parent !== "users" ? (
+        <Link
+          href={"/users"}
+          className="text-blue-500 underline cursor-pointer"
+        >
+          Show More
+        </Link>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

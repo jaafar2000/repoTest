@@ -1,7 +1,8 @@
 import React from "react";
-import { Heart, MessageCircle, Share2, Trash } from "lucide-react";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
+import { Heart, MessageCircle, Share2, Trash } from "lucide-react";
+
 const ActionsBtns = ({ post, delPost, callLikePost, likes }) => {
   const { user } = useUser();
 
@@ -11,20 +12,20 @@ const ActionsBtns = ({ post, delPost, callLikePost, likes }) => {
         href={`/post/${post?._id}`}
         className="flex flex-row items-center justify-center gap-1"
       >
-        <MessageCircle className="w-5 h-5 hover:text-blue-400" />
+        <MessageCircle className="w-5 h-5 cursor-pointer" />
         {post?.comments}
       </Link>
       <button
         onClick={() => callLikePost()}
         className="flex flex-row items-center gap-1"
       >
-        <Heart className="w-5 h-5 hover:text-pink-400" />
+        <Heart className="w-5 h-5 cursor-pointer" />
         {likes}
       </button>
-      <Share2 className="w-5 h-5 hover:text-green-400" />
+      <Share2 className="w-5 h-5 cursor-pointer" />
       {post?.userId === user?.id && (
         <button onClick={() => delPost()} className="flex items-center">
-          <Trash className="w-5 h-5 hover:text-red-400" />
+          <Trash className="w-5 h-5 cursor-pointer" />
         </button>
       )}
     </div>
