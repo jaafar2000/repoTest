@@ -78,9 +78,9 @@ const Post = ({ post, onPostDeleted }) => {
                   : "just now"}
               </span>
             </div>
-
+{/* bg-[#121212] border-l-2 border-white */}
             {post?.postText && (
-              <p className=" text-gray-300 text-sm leading-relaxed whitespace-pre-wrap bg-[#121212] rounded-sm p-2 border-l-2 border-white  mt-5 ">
+              <p className=" text-gray-300 text-sm leading-relaxed whitespace-pre-wrap  rounded-sm p-2   mt-5 ">
                 {post.postText}
               </p>
             )}

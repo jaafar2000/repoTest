@@ -83,28 +83,32 @@ export async function POST(req) {
 }
 
 
-export async function DELETE(req, context) {
+export async function GET() {
+
+  await dbConnect();
+  console.log("DB connected");
+
   try {
-    await dbConnect();
+    const posts = await Post.find({parentPostId:null})
+      .sort({ createdAt: -1 })
+      .populate("userMongoId", "username firstName lastName avatar")
+      .lean();
 
-    const { id } = context.params;
+    console.log("Posts found:", posts.length);
 
-    const post = await Post.findByIdAndDelete(id);
-    await Post.deleteMany({ parentPostId: id });
+    const formattedPosts = posts.map((post) => ({
+      ...post,
+      user: post.userMongoId,
+    }));
 
-    if (!post  ) {
-      return new Response(JSON.stringify({ error: "Post not found" }), {
-        status: 404,
-      });
-    }
-
-    return new Response(JSON.stringify({ message: "Post deleted" }), {
-      status: 200,
-    });
+    return new Response(JSON.stringify(formattedPosts), { status: 200 });
   } catch (err) {
-    console.error("Error in DELETE:", err);
+    console.error("Error in GET /api/feed:", err.message);
     return new Response(
-      JSON.stringify({ error: "Failed to delete post", message: err.message }),
+      JSON.stringify({
+        error: "Failed to fetch posts sorry",
+        message: err.message,
+      }),
       { status: 500 }
     );
   }
