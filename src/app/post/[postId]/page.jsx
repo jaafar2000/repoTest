@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { format } from "date-fns";
 import CreateReply from "@/app/components/CreateReply";
-import { usePostActions } from "@/app/hook/usePostActions";
+import { usePostActions } from "@/lib/actions/usePostActions";
 import ReplyCard from "@/app/components/ReplyCard";
 import { useUser } from "@clerk/nextjs";
 import { fetchPosts } from "@/lib/actions/fetchPosts";

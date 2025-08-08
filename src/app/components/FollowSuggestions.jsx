@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import {useSearchStore} from "@/lib/actions/useStateStore";
+
 const FollowSuggestions = ({  parent }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -112,6 +113,11 @@ const FollowSuggestions = ({  parent }) => {
                     <p className="text-gray-500 text-xs">@{u.username}</p>
                   </div>
                 </div>
+                <button>
+                  <Link href={`/chat/${u._id}`} >
+                  Msg
+                  </Link>
+                </button>
                 <button
                   onClick={() => handleFollow(u._id)}
                   disabled={updatingIds.has(u._id)}

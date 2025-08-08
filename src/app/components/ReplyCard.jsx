@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { format } from "date-fns";
-import { usePostActions } from "../hook/usePostActions";
+import { usePostActions } from "../../lib/actions/usePostActions";
 import { Trash } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 
@@ -9,12 +9,7 @@ const ReplyCard = ({ reply, userName, callFetch }) => {
   const { deletePost, deleting } = usePostActions({ postId: reply?._id });
   const { user } = useUser();
 
-  const {
-    postText,
-    createdAt,
-    userId,
-    user: replyUser = {},
-  } = reply || {};
+  const { postText, createdAt, userId, user: replyUser = {} } = reply || {};
 
   const { avatar, firstName, lastName, username } = replyUser;
 
@@ -23,12 +18,7 @@ const ReplyCard = ({ reply, userName, callFetch }) => {
   return (
     <div className="flex items-start gap-4 px-4 py-4 border-b border-[#2e3235] relative">
       <div className="w-10 h-10 rounded-full overflow-hidden relative shrink-0">
-        <Image
-          src={avatar}
-          alt="User Avatar"
-          fill
-          className="object-cover"
-        />
+        <Image src={avatar} alt="User Avatar" fill className="object-cover" />
       </div>
 
       <div className="flex-1">
